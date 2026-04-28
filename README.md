@@ -38,8 +38,7 @@ Su función: Es un observador silencioso. No calcula edificios, solo anota qué 
 
 5. Como correr:
   docker-compose up --build
+
+  En el archivo docker-compose.yml se cambia el tamaño de cache y si es LRU o LFU
+
   
-
-    Dataset: Verifica que el archivo santiago_buildings.csv esté dentro de la carpeta data y que esta carpeta esté mapeada en los volumes del docker-compose.
-
-    Redis: Asegúrate de que el límite de memoria (--maxmemory) sea pequeño al principio para que puedas ver cómo Redis borra datos (evicción), de lo contrario, si tu dataset es pequeño, nunca verás "Misses" una vez que la caché se llene.
