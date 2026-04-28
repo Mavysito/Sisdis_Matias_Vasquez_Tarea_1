@@ -1,0 +1,32 @@
+services:
+  cache:
+    image: redis:7-alpine
+    command: [ "redis-server", "--maxmemory", "50mb", "--maxmemory-policy", "allkeys-lru" ]
+    ports:
+      - "6379:6379"
+
+  response_generator:
+    build: ./response_generator
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=cache
+    volumes:
+      - ./data:/app/data
+
+  metrics:
+    build: ./metrics
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data:/app/data
+
+  traffic_generator:
+    build: ./traffic_generator
+    depends_on:
+      - response_generator
+      - metrics
+
+networks:
+  ttrpg_net:
+    driver: bridge
