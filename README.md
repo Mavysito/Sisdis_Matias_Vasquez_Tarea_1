@@ -1,4 +1,4 @@
-# Sisdis_Matias_Vasquez_Tarea_1
+# Tarea 1 Matias Vasquez
 
 prepare_data.py (El Filtro)
 
