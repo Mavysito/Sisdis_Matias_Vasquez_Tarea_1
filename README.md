@@ -39,6 +39,8 @@ Su función: Es un observador silencioso. No calcula edificios, solo anota qué 
 5. Como correr:
   docker-compose up --build
 
-  En el archivo docker-compose.yml se cambia el tamaño de cache y si es LRU o LFU
+  En el archivo docker-compose.yml se cambia el tamaño de cache y si es Random, LRU o LFU
+
+  En el main de trafic_generator.py se puede elegir distribucion uniforme o zipf
 
   
