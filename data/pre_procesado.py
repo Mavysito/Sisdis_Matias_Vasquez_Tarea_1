@@ -18,13 +18,11 @@ def asignar_zona(row):
 
 def procesar_dataset(input_csv):
     print("Leyendo dataset original...")
-    # Leemos solo las columnas necesarias para ahorrar RAM
     chunks = pd.read_csv(input_csv, usecols=['latitude', 'longitude', 'area_in_meters', 'confidence'], chunksize=100000)
     
     filtered_data = []
     
     for chunk in chunks:
-        # Filtro rápido por rango general de Santiago para no procesar todo el país
         santiago_chunk = chunk[
             (chunk['latitude'] >= -33.6) & (chunk['latitude'] <= -33.3) &
             (chunk['longitude'] >= -70.9) & (chunk['longitude'] <= -70.4)
@@ -39,6 +37,5 @@ def procesar_dataset(input_csv):
     print(f"Proceso terminado. Se guardaron {len(final_df)} edificios etiquetados.")
 
 if __name__ == "__main__":
-    # Cambia 'dataset_original.csv' por el nombre del archivo que descargaste
     procesar_dataset("/home/sudomavy/Escritorio/sis_dis/data/Data.csv")
     pass
