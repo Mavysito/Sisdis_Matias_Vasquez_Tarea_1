@@ -8,6 +8,7 @@ import json
 app = FastAPI()
 cache = redis.Redis(host=os.getenv("REDIS_HOST", "cache"), port=6379, decode_responses=True)
 
+TTL_CACHE = 90
 
 ZONE_AREAS = {
     "Z1": 5.5, "Z2": 6.2, "Z3": 8.1, "Z4": 4.8, "Z5": 7.3
@@ -36,7 +37,7 @@ def q1_count(zone_id: str, confidence_min: float = 0.0):
 
     count = len(df[(df['zone_id'] == zone_id) & (df['confidence'] >= confidence_min)])
     
-    cache.setex(cache_key, 60, str(count))
+    cache.setex(cache_key, TTL_CACHE, str(count))
     return {"source": "generator", "result": count}
 
 @app.get("/q2_area")
@@ -53,7 +54,7 @@ def q2_area(zone_id: str, confidence_min: float = 0.0):
         "total_area": float(subset['area_in_meters'].sum())
     }
     
-    cache.setex(cache_key, 60, json.dumps(res))
+    cache.setex(cache_key, TTL_CACHE, json.dumps(res))
     return {"source": "generator", "result": res}
 
 @app.get("/q3_density")
@@ -67,7 +68,7 @@ def q3_density(zone_id: str, confidence_min: float = 0.0):
     area_km2 = ZONE_AREAS.get(zone_id, 1.0)
     density = count / area_km2
     
-    cache.setex(cache_key, 60, str(density))
+    cache.setex(cache_key, TTL_CACHE, str(density))
     return {"source": "generator", "density": density}
 
 @app.get("/q4_compare")
@@ -88,10 +89,8 @@ def q4_compare(zone_a: str, zone_b: str, confidence_min: float = 0.0):
         "more_dense": zone_a if d_a > d_b else zone_b
     }
     
-    cache.setex(cache_key, 60, json.dumps(res))
+    cache.setex(cache_key, TTL_CACHE, json.dumps(res))
     return {"source": "generator", "result": res}
-
-
 
 @app.get("/q5_confidence_dist")
 def q5_confidence_dist(zone_id: str, bins: int = 5):
@@ -114,5 +113,5 @@ def q5_confidence_dist(zone_id: str, bins: int = 5):
             "count": int(counts[i])
         })
     
-    cache.setex(cache_key, 60, json.dumps(hist))
+    cache.setex(cache_key, TTL_CACHE, json.dumps(hist))
     return {"source": "generator", "histogram": hist}
