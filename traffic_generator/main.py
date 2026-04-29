@@ -9,7 +9,7 @@ ENDPOINT = "http://response_generator:8000"
 
 def generate_request(distribution="uniform"):
     """
-    Genera una consulta siguiendo la distribución seleccionada.
+    Genera una consulta siguiendo la distribucion seleccionada.
     """
     if distribution == "uniform":
         zona = random.choice(ZONAS)
@@ -25,7 +25,7 @@ def generate_request(distribution="uniform"):
 
 def run_simulation(duration_sec=300, dist="uniform"):
     start_time = time.time()
-    print(f"Iniciando simulación ({dist}) por {duration_sec} segundos...")
+    print(f"Iniciando simulacion ({dist}) por {duration_sec} segundos...")
     
     while time.time() - start_time < duration_sec:
         query, zona, conf = generate_request(dist)
@@ -57,10 +57,10 @@ def run_simulation(duration_sec=300, dist="uniform"):
                 print(f"Error {response.status_code} en {query}: {response.text}")
 
         except Exception as e:
-            print(f"Error de conexión: {e}")
+            print(f"Error de conexion: {e}")
         
         time.sleep(0.1)
 
 if __name__ == "__main__":
-    print("Iniciando simulación")
+    print("Iniciando simulacion")
     run_simulation(dist="uniform")
