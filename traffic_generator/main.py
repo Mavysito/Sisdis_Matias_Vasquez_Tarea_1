@@ -62,5 +62,5 @@ def run_simulation(duration_sec=300, dist="uniform"):
         time.sleep(0.1)
 
 if __name__ == "__main__":
-    print("Iniciando simulación Uniforme...")
+    print("Iniciando simulación")
     run_simulation(dist="uniform")
